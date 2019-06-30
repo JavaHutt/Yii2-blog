@@ -37,10 +37,12 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'content'], 'string'],
-            [['data'], 'safe'],
-            [['viewed', 'user_id', 'status', 'category_id'], 'integer'],
-            [['title', 'image'], 'string', 'max' => 255],
+            [['title'], 'required'],
+            [['title', 'description', 'content'], 'string'],
+            [['data'], 'date', 'format'=>'php:Y-m-d'],
+            [['data'], 'default', 'value'=>date('Y-m-d')],
+            [['title'], 'string', 'max'=>255]
+            
         ];
     }
 
@@ -52,8 +54,8 @@ class Article extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
-            'description' => 'Description',
-            'content' => 'Content',
+            'description' => 'Описание',
+            'content' => 'Контент',
             'data' => 'Data',
             'image' => 'Image',
             'viewed' => 'Viewed',
