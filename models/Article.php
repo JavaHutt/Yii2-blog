@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\ImageUpload;
 
 /**
  * This is the model class for table "article".
@@ -53,12 +54,12 @@ class Article extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
+            'title' => 'Заголовок',
             'description' => 'Описание',
             'content' => 'Контент',
-            'data' => 'Data',
-            'image' => 'Image',
-            'viewed' => 'Viewed',
+            'data' => 'Дата',
+            'image' => 'Изображение',
+            'viewed' => 'Просмотры',
             'user_id' => 'User ID',
             'status' => 'Status',
             'category_id' => 'Category ID',
@@ -79,5 +80,27 @@ class Article extends \yii\db\ActiveRecord
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['article_id' => 'id']);
+    }
+
+    public function getImage()
+    {
+        return ($this->image) ? '@web/uploads/' . $this->image : '@web/no-image.png';
+    }
+
+    public function saveImage($filename)
+    {
+        $this->image = $filename;
+        return $this->save(false);
+    }
+
+    public function deleteImage()
+    {
+        $imageUploadModel = new ImageUpload();
+        $imageUploadModel->deleteCurrentImage($this->image);
+    }
+
+    public function beforeDelete()
+    {
+        $this->deleteImage();
     }
 }

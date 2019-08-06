@@ -8,6 +8,8 @@ use app\models\ArticleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use app\models\ImageUpload;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -107,6 +109,30 @@ class ArticleController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    
+    /**
+     * Upload image in Article.
+     * @param integer $id - id
+     * @return mixed
+     */
+    public function actionSetImage($id)
+    {
+        $imageUploadModel = new ImageUpload;
+
+        if (Yii::$app->request->isPost) {
+            $article = $this->findModel($id);
+            $file = UploadedFile::getInstance($imageUploadModel, 'image');
+            
+            if ($article->saveImage($imageUploadModel->uploadFile($file, $article->image)))
+            {
+                return $this->redirect(['view', 'id' => $article->id]);
+            }
+        }       
+
+        return $this->render('image', [
+            'model' => $imageUploadModel
+        ]);
     }
 
     /**

@@ -44,11 +44,11 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Имя',
             'email' => 'Email',
-            'password' => 'Password',
+            'password' => 'Пароль',
             'isAdmin' => 'Is Admin',
-            'photo' => 'Photo',
+            'photo' => 'Аватар',
         ];
     }
 

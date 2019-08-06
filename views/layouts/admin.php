@@ -25,7 +25,6 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -38,14 +37,14 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/admin/default/index']],
-            ['label' => 'Articles', 'url' => ['/admin/article/index']],
-            ['label' => 'Tags', 'url' => ['/admin/tag/index']],
-            ['label' => 'Categories', 'url' => ['/admin/category/index']]
+            ['label' => 'Домой', 'url' => ['/admin/default/index']],
+            ['label' => 'Статьи', 'url' => ['/admin/article/index']],
+            ['label' => 'Тэги', 'url' => ['/admin/tag/index']],
+            ['label' => 'Категории', 'url' => ['/admin/category/index']]
         ],
     ]);
     NavBar::end();
-    ?>
+    ?>    
 
     <div class="container">
         <?= Breadcrumbs::widget([
