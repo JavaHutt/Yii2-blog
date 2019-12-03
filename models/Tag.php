@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\ArticleTag;
 
 /**
  * This is the model class for table "tag".
@@ -38,7 +39,7 @@ class Tag extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id'    => 'ID',
             'title' => 'Заголовок',
         ];
     }

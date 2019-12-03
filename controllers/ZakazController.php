@@ -1,20 +1,18 @@
 <?php
 
-namespace app\modules\admin\controllers;
+namespace app\controllers;
 
 use Yii;
-use app\models\Article;
-use app\models\ArticleSearch;
-use yii\web\UploadedFile;
-use app\models\Category;
+use app\models\zakaz;
+use app\models\zakazSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ArticleController implements the CRUD actions for Article model.
+ * ZakazController implements the CRUD actions for zakaz model.
  */
-class ArticleController extends Controller
+class ZakazController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,12 +30,12 @@ class ArticleController extends Controller
     }
 
     /**
-     * Lists all Article models.
+     * Lists all zakaz models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ArticleSearch();
+        $searchModel = new zakazSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +45,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Displays a single Article model.
+     * Displays a single zakaz model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -60,16 +58,15 @@ class ArticleController extends Controller
     }
 
     /**
-     * Creates a new Article model.
+     * Creates a new zakaz model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Article();
-        
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
-            Yii::$app->session->setFlash('success', 'Все прошло удачно');
+        $model = new zakaz();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -79,7 +76,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Updates an existing Article model.
+     * Updates an existing zakaz model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,7 +96,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Deletes an existing Article model.
+     * Deletes an existing zakaz model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -111,63 +108,17 @@ class ArticleController extends Controller
 
         return $this->redirect(['index']);
     }
-    
-    /**
-     * Upload image in Article.
-     * @param integer $id - id
-     * @return mixed
-     */
-    public function actionSetImage($id)
-    {
-        $imageUploadModel = new ImageUpload;
-
-        if (Yii::$app->request->isPost) {
-            $article = $this->findModel($id);
-            $file = UploadedFile::getInstance($imageUploadModel, 'image');
-            
-            if ($article->saveImage($imageUploadModel->uploadFile($file, $article->image)))
-            {
-                return $this->redirect(['view', 'id' => $article->id]);
-            }
-        }       
-
-        return $this->render('image', [
-            'model' => $imageUploadModel
-        ]);
-    }
-    
-    public function actionSetCategory($id)
-    {
-        $article = $this->findModel($id);
-        $selectedCategory = $article->category->id;
-        $categories = Category::getCategoryList();
-        
-        if (Yii::$app->request->isPost) {
-            $category = Yii::$app->request->post('category');
-            
-            if ($article->saveCategory($category)) {
-                Yii::$app->session->setFlash('success', 'Категория добавлена!');
-                return $this->redirect(['view', 'id' => $article->id]);
-            }
-        }
-        
-        return $this->render('category', [
-            'article' => $article,
-            'selectedCategory' => $selectedCategory,
-            'categories' => $categories
-        ]);
-    }
 
     /**
-     * Finds the Article model based on its primary key value.
+     * Finds the zakaz model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Article the loaded model
+     * @return zakaz the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        if (($model = zakaz::findOne($id)) !== null) {
             return $model;
         }
 

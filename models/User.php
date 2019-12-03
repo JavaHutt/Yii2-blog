@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Comment;
 
 /**
  * This is the model class for table "user".
@@ -43,16 +44,17 @@ class User extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Имя',
-            'email' => 'Email',
+            'id'       => 'ID',
+            'name'     => 'Имя',
+            'email'    => 'Email',
             'password' => 'Пароль',
-            'isAdmin' => 'Is Admin',
-            'photo' => 'Аватар',
+            'isAdmin'  => 'Is Admin',
+            'photo'    => 'Аватар',
         ];
     }
 
     /**
+     * Связь с комментариями
      * @return \yii\db\ActiveQuery
      */
     public function getComments()

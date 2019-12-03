@@ -7,11 +7,11 @@ use Yii;
 /**
  * This is the model class for table "comment".
  *
- * @property int $id
- * @property string $text
- * @property int $user_id
- * @property int $article_id
- * @property int $status
+ * @property int $id ID
+ * @property string $text Текст
+ * @property int $user_id ID пользователя
+ * @property int $article_id ID статьи
+ * @property int $status Статус
  *
  * @property Article $article
  * @property User $user
@@ -45,11 +45,11 @@ class Comment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'text' => 'Текст',
-            'user_id' => 'Пользователь ID',
+            'id'         => 'ID',
+            'text'       => 'Текст',
+            'user_id'    => 'Пользователь ID',
             'article_id' => 'Статья ID',
-            'status' => 'Статус',
+            'status'     => 'Статус',
         ];
     }
 

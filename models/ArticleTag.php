@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\Tag;
+use app\models\Article;
 
 /**
  * This is the model class for table "article_tag".
@@ -42,13 +44,14 @@ class ArticleTag extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id'         => 'ID',
             'article_id' => 'Статья ID',
-            'tag_id' => 'Тэг ID',
+            'tag_id'     => 'Тэг ID',
         ];
     }
 
     /**
+     * Связь с тегами
      * @return \yii\db\ActiveQuery
      */
     public function getTag()
@@ -57,6 +60,7 @@ class ArticleTag extends \yii\db\ActiveRecord
     }
 
     /**
+     * Связь со статьями
      * @return \yii\db\ActiveQuery
      */
     public function getArticle()
