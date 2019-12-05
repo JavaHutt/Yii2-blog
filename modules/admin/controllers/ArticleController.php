@@ -5,6 +5,7 @@ namespace app\modules\admin\controllers;
 use Yii;
 use app\models\Article;
 use app\models\ArticleSearch;
+use app\models\Tag;
 use yii\web\UploadedFile;
 use app\models\Category;
 use yii\web\Controller;
@@ -136,6 +137,11 @@ class ArticleController extends Controller
         ]);
     }
     
+    /**
+     * Задать категорию для статьи
+     * @param int $id
+     * @return mixed
+     */
     public function actionSetCategory($id)
     {
         $article = $this->findModel($id);
@@ -155,6 +161,30 @@ class ArticleController extends Controller
             'article' => $article,
             'selectedCategory' => $selectedCategory,
             'categories' => $categories
+        ]);
+    }
+    
+    /**
+     * Задать тег для статьи
+     * @param int $id
+     * @return mixed
+     */
+    public function actionSetTag($id)
+    {
+        $article = $this->findModel($id);
+        $selectedTags = $article->getSelectedTags();
+        $tags = Tag::getTagList();
+        
+        if (Yii::$app->request->isPost) {
+            $tags = Yii::$app->request->post('tags');
+            $article->saveTags($tags);
+            
+            return $this->redirect(['view', 'id' => $article->id]);
+        }
+        
+        return $this->render('tags', [
+            'selectedTags' => $selectedTags,
+            'tags' => $tags
         ]);
     }
 

@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use app\models\ArticleTag;
+use app\models\Article;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "tag".
@@ -12,6 +14,7 @@ use app\models\ArticleTag;
  * @property string $title
  *
  * @property ArticleTag[] $articleTags
+ * @property Article[] $articles
  */
 class Tag extends \yii\db\ActiveRecord
 {
@@ -50,5 +53,24 @@ class Tag extends \yii\db\ActiveRecord
     public function getArticleTags()
     {
         return $this->hasMany(ArticleTag::className(), ['tag_id' => 'id']);
+    }
+    
+    /**
+     * Связь со статьями
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArticles()
+    {
+        return $this->hasMany(Article::className(), ['id' => 'article_id'])
+                        ->via('articleTags');
+    }
+        
+    /**
+     * Полный список тегов
+     * @return array
+     */
+    public static function getTagList()
+    {
+        return ArrayHelper::map(self::find()->all(), 'id', 'title');
     }
 }

@@ -5,8 +5,10 @@ namespace app\models;
 use Yii;
 use app\models\ImageUpload;
 use app\models\ArticleTag;
+use app\models\Tag;
 use app\models\Comment;
 use app\models\Category;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "article".
@@ -25,6 +27,7 @@ use app\models\Category;
  * @property ArticleTag[] $articleTags
  * @property Comment[] $comments
  * @property Category $category
+ * @property Tags[] $tags
  */
 class Article extends \yii\db\ActiveRecord
 {
@@ -96,6 +99,27 @@ class Article extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
+    
+    /**
+     * Связь с тегами
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+                        ->via('articleTags');
+    }
+    
+    /**
+     * Получение выбранных тегов
+     * @return array
+     */
+    public function getSelectedTags()
+    {
+        $array = $this->getTags()->select('id')->asArray()->all();
+        
+        return ArrayHelper::getColumn($array, 'id');
+    }
 
     /**
      * Получение изображения
@@ -118,6 +142,32 @@ class Article extends \yii\db\ActiveRecord
     }
     
     /**
+     * Сохранение тегов
+     * @param array $tags теги
+     * @return boolean
+     */
+    public function saveTags($tags)
+    {
+        if (is_array($tags)) {
+            $this->clearCurrentTags();
+            
+            foreach ($tags as $tag) {
+                $tag = Tag::findOne($tag);
+                $this->link('tags', $tag);
+                return true;
+            }
+        }
+    }
+    
+    /**
+     * Обнуление текущих тегов
+     */
+    private function clearCurrentTags()
+    {
+        ArticleTag::deleteAll(['article_id' => $this->id]);
+    }
+    
+    /**
      * Удаление изображения
      * @return void
      */
@@ -136,9 +186,14 @@ class Article extends \yii\db\ActiveRecord
         $this->deleteImage();
     }
     
-    public function saveCategory($category)
+    /**
+     * Сохранение категории
+     * @param int $category_id категория
+     * @return boolean
+     */
+    public function saveCategory($category_id)
     {
-        $category = Category::findOne($category);
+        $category = Category::findOne($category_id);
         
         if ($category) {
             $this->link('category', $category);
